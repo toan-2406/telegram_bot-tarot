@@ -1,0 +1,73 @@
+.card-animation {
+  position: relative;
+  height: 400px;
+  margin: 0 auto;
+  background-color:#383333;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius: 10px;
+}
+
+.card {
+  position: relative;
+  width: 160px; /* Chiều rộng của lá bài đã giảm */
+  height: 240px; /* Chiều cao của lá bài đã giảm */
+  perspective: 400px; /* Độ sâu không gian 3D đã điều chỉnh */
+  position: absolute;
+  border-radius: 8px;
+  overflow:hidden
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.shuffle-button {
+  background-color: #007bff;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.draw-card-button {
+  background-color: green;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.explain-result {
+  position:fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background-color: #383333;
+  width: 100%;
+  height: 400px;
+
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.explain-result-content {
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.button-card-detail {
+  transform: rotateY(180deg) translate(-50%,-50%);
+  position: absolute;
+  font-size: 13px;
+  bottom: -10px;
+  left: 0;
+  z-index: 1000;
+  text-decoration: underline;
+  cursor: pointer;
+  color: black;
+
+
+}
