@@ -1,19 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 import DrawCardAnimation from "./components/DrawCardAnimation";
-import { cardTalkAboutYou } from "./services/translateService";
+import { cardTalkAboutYou, TarotResponse } from "./services/translateService";
 import { useLoading } from "./contexts/loading.context";
-
-interface Card {
-  name: string;
-  name_short: string;
-  value: string;
-  value_int: number;
-  suit: string;
-  meaning_up: string;
-  meaning_rev: string;
-  desc: string;
-}
 
 interface Hints {
   love: string;
@@ -35,10 +24,13 @@ function App() {
     { value: "personal_growth", label: "Phát triển cá nhân" },
   ];
   const [names, setNames] = useState<string[]>([]);
-  const [result, setResult] = useState<string>("");
+  const [result, setResult] = useState<TarotResponse | null>(null);
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
   const [isExplain, setIsExplain] = useState<boolean>(false);
-  const [optionSelected, setOptionSelected] = useState<{ value: HintType; label: string } | null>(null);
+  const [optionSelected, setOptionSelected] = useState<{
+    value: HintType;
+    label: string;
+  } | null>(null);
   const fetchResult = async (
     cardNames: string[],
     hint: { value: HintType; label: string }
@@ -87,8 +79,15 @@ function App() {
       {result && isExplain && (
         <div className="explain-main-result">
           <div className="explain-main-result-content">
-            <p> <strong>Phân tích: </strong> {result.analysis}</p>
-            <p> <strong>{optionSelected?.label}: </strong> {result[optionSelected?.value]}</p>
+            <p>
+              {" "}
+              <strong>Phân tích: </strong> {result.analysis}
+            </p>
+            <p>
+              {" "}
+              <strong>{optionSelected?.label}: </strong>{" "}
+              {result[optionSelected?.value as keyof TarotResponse]}
+            </p>
           </div>
           <button onClick={() => setIsExplain(false)}>Close</button>
         </div>
