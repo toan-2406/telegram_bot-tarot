@@ -42,6 +42,10 @@ const DrawCardAnimation: React.FC<{
   const [explainResult, setExplainResult] = useState<ExplainResult[]>([]);
 
   useEffect(() => {
+    console.log(tarotCards);
+  }, [tarotCards]);
+
+  useEffect(() => {
     if (selectedCards.length > 0) {
       getCardNames(selectedCards.map((card) => card.name));
     }
@@ -50,15 +54,19 @@ const DrawCardAnimation: React.FC<{
   useEffect(() => {
     const containerWidth = 300;
     const containerHeight = 400;
-    const cardWidth = 100;
-    const cardHeight = 200;
+    const cardWidth = 160;
+    const cardHeight = 240;
     if (isShuffling) {
       setTarotCards((prevCards) =>
         prevCards.map((card) => ({
           ...card,
           position: {
-            top: Math.random() * (containerHeight - cardHeight),
-            left: Math.random() * (containerWidth - cardWidth),
+            top:
+              (containerHeight - cardHeight) / 2 +
+              Math.random() * (containerHeight / 2 - cardHeight / 2),
+            left:
+              (containerWidth - cardWidth) / 2 +
+              Math.random() * (containerWidth / 2 - cardWidth / 2),
           },
         }))
       );
@@ -67,11 +75,10 @@ const DrawCardAnimation: React.FC<{
 
   const shuffleCards = () => {
     resetSelectedCards();
-    setExplainResult([]); // Đặt explainResult về mảng rỗng khi xáo bài
+    setExplainResult([]);
     setIsShuffling(true);
     setShuffleCount((prevCount) => prevCount + 1);
     let currentIndex = tarotCards.length - 1;
-    console.log("Bắt đầu xáo bài, số lượng lá bài:", tarotCards.length);
 
     const shuffleStep = () => {
       if (currentIndex <= 0) {
@@ -81,36 +88,23 @@ const DrawCardAnimation: React.FC<{
 
       setTarotCards((prevCards) => {
         const newCards = [...prevCards];
-        const randomIndex = Math.floor(Math.random() * currentIndex);
-        console.log(
-          "Đang xáo bài, chỉ số hiện tại:",
-          currentIndex,
-          "chỉ số ngẫu nhiên:",
-          randomIndex
-        );
+        const randomIndex = Math.floor(Math.random() * (currentIndex + 1));
 
         const tempCard = newCards[currentIndex];
-        newCards[currentIndex] = {
-          ...newCards[randomIndex],
-          zIndex: tempCard.zIndex,
-        };
-        newCards[randomIndex] = {
-          ...tempCard,
-          zIndex: newCards[randomIndex].zIndex,
-        };
+        newCards[currentIndex] = newCards[randomIndex];
+        newCards[randomIndex] = tempCard;
 
         return newCards.map((card) => ({
           ...card,
           isFlipped: false,
           position: {
-            top: Math.random() * (400 - 240),
-            left: Math.random() * (300 - 160),
+            top: (400 - 240) / 2 + Math.random() * (400 / 2 - 240 / 2),
+            left: (300 - 160) / 2 + Math.random() * (300 / 2 - 160 / 2),
           },
         }));
       });
-
       currentIndex--;
-      setTimeout(shuffleStep, 300);
+      setTimeout(shuffleStep, 200);
     };
 
     shuffleStep();
@@ -122,7 +116,6 @@ const DrawCardAnimation: React.FC<{
 
   const flipCard = (index: number) => {
     if (!isShuffling) {
-      
       setTarotCards((prevCards) => {
         let cardFlipped = false;
         return prevCards.map((card, i) => {
@@ -132,7 +125,6 @@ const DrawCardAnimation: React.FC<{
               (selectedCard) => selectedCard.name === card.name && i === index
             )
           ) {
-            console.log("Đã lật lá bài:", card.name);
             setIndex(index);
             getIsFlipped(true);
             cardFlipped = true;
@@ -145,26 +137,41 @@ const DrawCardAnimation: React.FC<{
   };
 
   const drawSelectedCards = (quality: number) => {
-    const randomCards = tarotCards
-      .sort(() => 0.5 - Math.random())
-      .slice(0, quality)
-      .map((card) => ({ ...card, isFlipped: true, zIndex: 102 }));
-    setSelectedCards(randomCards);
+    const randomCards = tarotCards.slice(0, quality).map((card, index) => {
+      if (index < quality) {
+        return { ...card, isFlipped: true, zIndex: 102 };
+      }
+      return { ...card, isFlipped: false, zIndex: 0 };
+    });
+    setSelectedCards(randomCards.filter((card) => card.isFlipped));
   };
 
+  // Hàm handleExplainTarotCard nhận vào một chỉ số (index) của lá bài được chọn
   const handleExplainTarotCard = async (index: number) => {
+    // Lấy lá bài đã chọn dựa trên chỉ số
     const selectedCard = selectedCards[index];
+    // Kiểm tra xem lá bài đã chọn có tồn tại không
     if (selectedCard) {
-      setLoading(true); // Bắt đầu loading khi gọi API
-      const existingIndex = explainResult.findIndex(item => item.index === index);
+      // Bắt đầu trạng thái tải
+      setLoading(true);
+      // Tìm chỉ số của kết quả giải thích đã tồn tại trong explainResult
+      const existingIndex = explainResult.findIndex(
+        (item) => item.index === index
+      );
+      // Nếu không tìm thấy kết quả giải thích cho lá bài này
       if (existingIndex === -1) {
+        // Gọi hàm explainTarotCard để lấy kết quả giải thích cho lá bài đã chọn
         const result = await explainTarotCard(selectedCard.name);
+        // Đặt trạng thái giải thích là true
         setIsExplain(true);
+        // Cập nhật explainResult với kết quả mới
         setExplainResult([...explainResult, { index, explainResult: result }]);
       } else {
-        console.log("Chưa tìm thấy index =", index, "trong explainResult");
+        // Nếu đã có kết quả giải thích, chỉ cần đặt trạng thái giải thích là true
+        setIsExplain(true);
       }
-      setLoading(false); // Kết thúc loading sau khi nhận được kết quả
+      // Kết thúc trạng thái tải
+      setLoading(false);
     }
   };
 
@@ -174,19 +181,39 @@ const DrawCardAnimation: React.FC<{
         <div className="explain-result">
           <div className="explain-result-content">
             <p>
-              <strong>Giải thích lá bài:</strong> {explainResult.find(item => item.index === index)?.explainResult?.general}
+              <strong>Giải thích lá bài:</strong>{" "}
+              {
+                explainResult.find((item) => item.index === index)
+                  ?.explainResult?.general
+              }
             </p>
             <p>
-                <strong>Tình yêu:</strong> {explainResult.find(item => item.index === index)?.explainResult?.love}
+              <strong>Tình yêu:</strong>{" "}
+              {
+                explainResult.find((item) => item.index === index)
+                  ?.explainResult?.love
+              }
             </p>
             <p>
-              <strong>Nghề nghiệp:</strong> {explainResult.find(item => item.index === index)?.explainResult?.career}
+              <strong>Nghề nghiệp:</strong>{" "}
+              {
+                explainResult.find((item) => item.index === index)
+                  ?.explainResult?.career
+              }
             </p>
             <p>
-              <strong>Tài chính:</strong> {explainResult.find(item => item.index === index)?.explainResult?.finance}
+              <strong>Tài chính:</strong>{" "}
+              {
+                explainResult.find((item) => item.index === index)
+                  ?.explainResult?.finance
+              }
             </p>
             <p>
-              <strong>Lời khuyên:</strong> {explainResult.find(item => item.index === index)?.explainResult?.advice}
+              <strong>Lời khuyên:</strong>{" "}
+              {
+                explainResult.find((item) => item.index === index)
+                  ?.explainResult?.advice
+              }
             </p>
           </div>
           <button className="close-button" onClick={() => setIsExplain(false)}>
