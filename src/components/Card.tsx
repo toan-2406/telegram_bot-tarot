@@ -33,7 +33,7 @@ const Card: React.FC<CardProps> = ({
   return (
     <div
       key={index}
-      className={`card-${index + 1} card`}
+      className={`card-${index + 1} w-[160px] h-[240px] perspective-[400px] absolute rounded-lg overflow-hidden`}
       style={{
         zIndex:
           isSelected && !isShuffling
@@ -72,9 +72,9 @@ const Card: React.FC<CardProps> = ({
         <img src={backCard} alt="" />
       </div>
       {showDetailButton && !isShuffling && isSelected && card.isFlipped && (
-          <div className="button-card-detail" >
+          <div className="button-card-detail bg-[#FEF9EEFF] text-black px-1 rounded-xs" >
             <span onClick={() => handleExplainTarotCard(index)}>
-              Xem chi tiết
+              read card
             </span>
           </div>
         )}

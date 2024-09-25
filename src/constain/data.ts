@@ -20,6 +20,64 @@ import image19 from "../assets/cards/image19.jpg";
 import image20 from "../assets/cards/image20.jpg";
 import image21 from "../assets/cards/image21.jpg";
 import image22 from "../assets/cards/image22.jpg";
+import image23 from "../assets/cards/image23.jpg";
+import image24 from "../assets/cards/image24.jpg";
+import image25 from "../assets/cards/image25.jpg";
+import image26 from "../assets/cards/image26.jpg";
+import image27 from "../assets/cards/image27.jpg";
+import image28 from "../assets/cards/image28.jpg";
+import image29 from "../assets/cards/image29.jpg";
+import image30 from "../assets/cards/image30.jpg";
+import image31 from "../assets/cards/image31.jpg";
+import image32 from "../assets/cards/image32.jpg";
+import image33 from "../assets/cards/image33.jpg";
+import image34 from "../assets/cards/image34.jpg";
+import image35 from "../assets/cards/image35.jpg";
+import image36 from "../assets/cards/image36.jpg";
+import image37 from "../assets/cards/image37.jpg";
+import image38 from "../assets/cards/image38.jpg";
+import image39 from "../assets/cards/image39.jpg";
+import image40 from "../assets/cards/image40.jpg";
+import image41 from "../assets/cards/image41.jpg";
+import image42 from "../assets/cards/image42.jpg";
+import image43 from "../assets/cards/image43.jpg";
+import image44 from "../assets/cards/image44.jpg";
+import image45 from "../assets/cards/image45.jpg";
+import image46 from "../assets/cards/image46.jpg";
+import image47 from "../assets/cards/image47.jpg";
+import image48 from "../assets/cards/image48.jpg";
+import image49 from "../assets/cards/image49.jpg";
+import image50 from "../assets/cards/image50.jpg";
+import image51 from "../assets/cards/image51.jpg";
+import image52 from "../assets/cards/image52.jpg";
+import image53 from "../assets/cards/image53.jpg";
+import image54 from "../assets/cards/image54.jpg";
+import image55 from "../assets/cards/image55.jpg";
+import image56 from "../assets/cards/image56.jpg";
+import image57 from "../assets/cards/image57.jpg";
+import image58 from "../assets/cards/image58.jpg";
+import image59 from "../assets/cards/image59.jpg";
+import image60 from "../assets/cards/image60.jpg";
+import image61 from "../assets/cards/image61.jpg";
+import image62 from "../assets/cards/image62.jpg";
+import image63 from "../assets/cards/image63.jpg";
+import image64 from "../assets/cards/image64.jpg";
+import image65 from "../assets/cards/image65.jpg";
+import image66 from "../assets/cards/image66.jpg";
+import image67 from "../assets/cards/image67.jpg";
+import image68 from "../assets/cards/image68.jpg";
+import image69 from "../assets/cards/image69.jpg";
+import image70 from "../assets/cards/image70.jpg";
+import image71 from "../assets/cards/image71.jpg";
+import image72 from "../assets/cards/image72.jpg";
+import image73 from "../assets/cards/image73.jpg";
+import image74 from "../assets/cards/image74.jpg";
+import image75 from "../assets/cards/image75.jpg";
+import image76 from "../assets/cards/image76.jpg";
+import image77 from "../assets/cards/image77.jpg";
+import image78 from "../assets/cards/image78.jpg";
+
+
 
 export const cardData = [
   { name: "The Magician", img: image1 },
@@ -44,60 +102,60 @@ export const cardData = [
   { name: "The Last Judgment", img: image20 },
   { name: "The Fool", img: image21 },
   { name: "The World", img: image22 },
-  // { name: "Page of Wands", img: "path/to/image23.png" },
-  // { name: "Knight of Wands", img: "path/to/image24.png" },
-  // { name: "Queen of Wands", img: "path/to/image25.png" },
-  // { name: "King of Wands", img: "path/to/image26.png" },
-  // { name: "Ace of Wands", img: "path/to/image27.png" },
-  // { name: "Two of Wands", img: "path/to/image28.png" },
-  // { name: "Three of Wands", img: "path/to/image29.png" },
-  // { name: "Four of Wands", img: "path/to/image30.png" },
-  // { name: "Five of Wands", img: "path/to/image31.png" },
-  // { name: "Six of Wands", img: "path/to/image32.png" },
-  // { name: "Seven of Wands", img: "path/to/image33.png" },
-  // { name: "Eight of Wands", img: "path/to/image34.png" },
-  // { name: "Nine of Wands", img: "path/to/image35.png" },
-  // { name: "Ten of Wands", img: "path/to/image36.png" },
-  // { name: "Page of Cups", img: "path/to/image37.png" },
-  // { name: "Knight of Cups", img: "path/to/image38.png" },
-  // { name: "Queen of Cups", img: "path/to/image39.png" },
-  // { name: "King of Cups", img: "path/to/image40.png" },
-  // { name: "Ace of Cups", img: "path/to/image41.png" },
-  // { name: "Two of Cups", img: "path/to/image42.png" },
-  // { name: "Three of Cups", img: "path/to/image43.png" },
-  // { name: "Four of Cups", img: "path/to/image44.png" },
-  // { name: "Five of Cups", img: "path/to/image45.png" },
-  // { name: "Six of Cups", img: "path/to/image46.png" },
-  // { name: "Seven of Cups", img: "path/to/image47.png" },
-  // { name: "Eight of Cups", img: "path/to/image48.png" },
-  // { name: "Nine of Cups", img: "path/to/image49.png" },
-  // { name: "Ten of Cups", img: "path/to/image50.png" },
-  // { name: "Page of Pentacles", img: "path/to/image51.png" },
-  // { name: "Knight of Pentacles", img: "path/to/image52.png" },
-  // { name: "Queen of Pentacles", img: "path/to/image53.png" },
-  // { name: "King of Pentacles", img: "path/to/image54.png" },
-  // { name: "Ace of Pentacles", img: "path/to/image55.png" },
-  // { name: "Two of Pentacles", img: "path/to/image56.png" },
-  // { name: "Three of Pentacles", img: "path/to/image57.png" },
-  // { name: "Four of Pentacles", img: "path/to/image58.png" },
-  // { name: "Five of Pentacles", img: "path/to/image59.png" },
-  // { name: "Six of Pentacles", img: "path/to/image60.png" },
-  // { name: "Seven of Pentacles", img: "path/to/image61.png" },
-  // { name: "Eight of Pentacles", img: "path/to/image62.png" },
-  // { name: "Nine of Pentacles", img: "path/to/image63.png" },
-  // { name: "Ten of Pentacles", img: "path/to/image64.png" },
-  // { name: "Page of Swords", img: "path/to/image65.png" },
-  // { name: "Knight of Swords", img: "path/to/image66.png" },
-  // { name: "Queen of Swords", img: "path/to/image67.png" },
-  // { name: "King of Swords", img: "path/to/image68.png" },
-  // { name: "Ace of Swords", img: "path/to/image69.png" },
-  // { name: "Two of Swords", img: "path/to/image70.png" },
-  // { name: "Three of Swords", img: "path/to/image71.png" },
-  // { name: "Four of Swords", img: "path/to/image72.png" },
-  // { name: "Five of Swords", img: "path/to/image73.png" },
-  // { name: "Six of Swords", img: "path/to/image74.png" },
-  // { name: "Seven of Swords", img: "path/to/image75.png" },
-  // { name: "Eight of Swords", img: "path/to/image76.png" },
-  // { name: "Nine of Swords", img: "path/to/image77.png" },
-  // { name: "Ten of Swords", img: "path/to/image78.png" },
+  { name: "Page of Wands", img: image23 },
+  { name: "Knight of Wands", img: image24 },
+  { name: "Queen of Wands", img: image25 },
+  { name: "King of Wands", img: image26 },
+  { name: "Ace of Wands", img: image27 },
+  { name: "Two of Wands", img: image28 },
+  { name: "Three of Wands", img: image29 },
+  { name: "Four of Wands", img: image30 },
+  { name: "Five of Wands", img: image31 },
+  { name: "Six of Wands", img: image32 },
+  { name: "Seven of Wands", img: image33 },
+  { name: "Eight of Wands", img: image34 },
+  { name: "Nine of Wands", img: image35 },
+  { name: "Ten of Wands", img: image36 },
+  { name: "Page of Cups", img: image37 },
+  { name: "Knight of Cups", img: image38 },
+  { name: "Queen of Cups", img: image39 },
+  { name: "King of Cups", img: image40 },
+  { name: "Ace of Cups", img: image41 },
+  { name: "Two of Cups", img: image42 },
+  { name: "Three of Cups", img: image43 },
+  { name: "Four of Cups", img: image44 },
+  { name: "Five of Cups", img: image45 },
+  { name: "Six of Cups", img: image46 },
+  { name: "Seven of Cups", img: image47 },
+  { name: "Eight of Cups", img: image48 },
+  { name: "Nine of Cups", img: image49 },
+  { name: "Ten of Cups", img: image50 },
+  { name: "Page of Pentacles", img: image51 },
+  { name: "Knight of Pentacles", img: image52 },
+  { name: "Queen of Pentacles", img: image53 },
+  { name: "King of Pentacles", img: image54 },
+  { name: "Ace of Pentacles", img: image55 },
+  { name: "Two of Pentacles", img: image56 },
+  { name: "Three of Pentacles", img: image57 },
+  { name: "Four of Pentacles", img: image58 },
+  { name: "Five of Pentacles", img: image59 },
+  { name: "Six of Pentacles", img: image60 },
+  { name: "Seven of Pentacles", img: image61 },
+  { name: "Eight of Pentacles", img: image62 },
+  { name: "Nine of Pentacles", img: image63 },
+  { name: "Ten of Pentacles", img: image64 },
+  { name: "Page of Swords", img: image65 },
+  { name: "Knight of Swords", img: image66 },
+  { name: "Queen of Swords", img: image67 },
+  { name: "King of Swords", img: image68 },
+  { name: "Ace of Swords", img: image69 },
+  { name: "Two of Swords", img: image70 },
+  { name: "Three of Swords", img: image71 },
+  { name: "Four of Swords", img: image72 },
+  { name: "Five of Swords", img: image73 },
+  { name: "Six of Swords", img: image74 },
+  { name: "Seven of Swords", img: image75 },
+  { name: "Eight of Swords", img: image76 },
+  { name: "Nine of Swords", img: image77 },
+  { name: "Ten of Swords", img: image78 },
 ];

@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Card from "./Card";
 import "./DrawCardAnimation.css";
 import { cardData } from "../constain/data";
 import {
   explainTarotCard,
   TarotCardExplanation,
-} from "../services/translateService";
+} from "../services/api";
 import { useLoading } from "../contexts/loading.context"; // Thêm import context loading
+import { FaHandPointUp, FaShuffle } from "react-icons/fa6";
 
 export interface TarotCard {
   name: string;
@@ -24,10 +25,12 @@ interface ExplainResult {
 const DrawCardAnimation: React.FC<{
   getCardNames: (cardNames: string[]) => void;
   getIsFlipped: (isFlipped: boolean) => void;
-}> = ({ getCardNames, getIsFlipped }) => {
-  const { setLoading } = useLoading(); // Sử dụng context loading
+  getIsShuffling: (isShuffling: boolean) => void;
+}> = ({ getCardNames, getIsFlipped, getIsShuffling }) => {
+  const { setLoading } = useLoading();
   const [selectedCards, setSelectedCards] = useState<TarotCard[]>([]);
   const [index, setIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [tarotCards, setTarotCards] = useState<TarotCard[]>(
     cardData.map((card, index) => ({
       name: card.name,
@@ -42,18 +45,14 @@ const DrawCardAnimation: React.FC<{
   const [explainResult, setExplainResult] = useState<ExplainResult[]>([]);
 
   useEffect(() => {
-    console.log(tarotCards);
-  }, [tarotCards]);
-
-  useEffect(() => {
     if (selectedCards.length > 0) {
       getCardNames(selectedCards.map((card) => card.name));
     }
   }, [selectedCards]);
 
   useEffect(() => {
-    const containerWidth = 300;
-    const containerHeight = 400;
+    const containerWidth = containerRef.current?.offsetWidth ?? 280;
+    const containerHeight = containerRef.current?.offsetHeight ?? 320;
     const cardWidth = 160;
     const cardHeight = 240;
     if (isShuffling) {
@@ -76,7 +75,9 @@ const DrawCardAnimation: React.FC<{
   const shuffleCards = () => {
     resetSelectedCards();
     setExplainResult([]);
+    getIsShuffling(true);
     setIsShuffling(true);
+    getIsFlipped(false);
     setShuffleCount((prevCount) => prevCount + 1);
     let currentIndex = tarotCards.length - 1;
 
@@ -98,15 +99,15 @@ const DrawCardAnimation: React.FC<{
           ...card,
           isFlipped: false,
           position: {
-            top: (400 - 240) / 2 + Math.random() * (400 / 2 - 240 / 2),
-            left: (300 - 160) / 2 + Math.random() * (300 / 2 - 160 / 2),
+            top: (320 - 240) / 2 + Math.random() * (320 / 2 - 240 / 2),
+            left: (280 - 160) / 2 + Math.random() * (280 / 2 - 160 / 2),
           },
         }));
       });
       currentIndex--;
-      setTimeout(shuffleStep, 200);
-    };
 
+      setTimeout(shuffleStep, 150);
+    };
     shuffleStep();
   };
 
@@ -178,50 +179,87 @@ const DrawCardAnimation: React.FC<{
   return (
     <>
       {isExplain && explainResult.length > 0 && (
-        <div className="explain-result">
-          <div className="explain-result-content">
-            <p>
-              <strong>Giải thích lá bài:</strong>{" "}
-              {
-                explainResult.find((item) => item.index === index)
-                  ?.explainResult?.general
-              }
-            </p>
-            <p>
-              <strong>Tình yêu:</strong>{" "}
-              {
-                explainResult.find((item) => item.index === index)
-                  ?.explainResult?.love
-              }
-            </p>
-            <p>
-              <strong>Nghề nghiệp:</strong>{" "}
-              {
-                explainResult.find((item) => item.index === index)
-                  ?.explainResult?.career
-              }
-            </p>
-            <p>
-              <strong>Tài chính:</strong>{" "}
-              {
-                explainResult.find((item) => item.index === index)
-                  ?.explainResult?.finance
-              }
-            </p>
-            <p>
-              <strong>Lời khuyên:</strong>{" "}
-              {
-                explainResult.find((item) => item.index === index)
-                  ?.explainResult?.advice
-              }
-            </p>
+        <div className="fixed bottom-0 left-0 w-full h-screen px-5 py-11 bg-[#1D2128FF] rounded-md z-[1000]">
+          <h2 className="font-archivo text-sm font-light text-gray-300 text-center">
+            Thông tin lá bài
+          </h2>
+          <p className="font-inter text-sm font-bold text-primary text-center mb-2">
+            {selectedCards[index].name}
+          </p>
+          <div className="max-h-[70vh] overflow-y-auto bg-[#171A1FFF] rounded-lg p-2">
+            <div className="mb-4">
+              <p className="font-inter text-sm font-normal text-[#c0c0c0]">
+                <strong className="font-archivo text-sm font-bold text-[#FFFFFF] underline decoration-yellow-500 decoration-2 underline-offset-2">
+                  Giải thích lá bài:{" "}
+                </strong>{" "}
+                <br />{" "}
+                {
+                  explainResult.find((item) => item.index === index)
+                    ?.explainResult?.general
+                }
+              </p>
+            </div>
+            <div className="mb-4">
+              <p className="font-inter text-sm font-normal text-[#c0c0c0]">
+                <strong className="font-archivo text-sm font-bold text-[#FFFFFF] underline decoration-yellow-500 decoration-2 underline-offset-2">
+                  Tình yêu:{" "}
+                </strong>{" "}
+                <br />{" "}
+                {
+                  explainResult.find((item) => item.index === index)
+                    ?.explainResult?.love
+                }
+              </p>
+            </div>
+            <div className="mb-4">
+              <p className="font-inter text-sm font-normal text-[#c0c0c0]">
+                <strong className="font-archivo text-sm font-bold text-[#FFFFFF] underline decoration-yellow-500 decoration-2 underline-offset-2">
+                  Nghề nghiệp:{" "}
+                </strong>{" "}
+                <br />{" "}
+                {
+                  explainResult.find((item) => item.index === index)
+                    ?.explainResult?.career
+                }
+              </p>
+            </div>
+            <div className="mb-4">
+              <p className="font-inter text-sm font-normal text-[#c0c0c0]">
+                <strong className="font-archivo text-sm font-bold text-[#FFFFFF] underline decoration-yellow-500 decoration-2 underline-offset-2">
+                  Tài chính:{" "}
+                </strong>{" "}
+                <br />{" "}
+                {
+                  explainResult.find((item) => item.index === index)
+                    ?.explainResult?.finance
+                }
+              </p>
+            </div>
+            <div className="mb-4">
+              <p className="font-inter text-sm font-normal text-[#c0c0c0]">
+                <strong className="font-archivo text-sm font-bold text-[#FFFFFF] underline decoration-yellow-500 decoration-2 underline-offset-2">
+                  Lời khuyên:{" "}
+                </strong>{" "}
+                <br />{" "}
+                {
+                  explainResult.find((item) => item.index === index)
+                    ?.explainResult?.advice
+                }
+              </p>
+            </div>
           </div>
-          <button className="close-button" onClick={() => setIsExplain(false)}>
-            Đóng
+          <button
+            className="rounded-full bg-black px-3 py-1 absolute bottom-5 right-1/2 translate-x-1/2"
+            onClick={() => setIsExplain(false)}
+          >
+            <span className="text-white">X</span>
           </button>
         </div>
       )}
-      <div className="card-animation">
+      <div
+        ref={containerRef}
+        className="relative h-[360px] mx-auto w-full flex items-center justify-center rounded-10 max-w-450 "
+      >
         {tarotCards.map((card, index) => (
           <Card
             key={index}
@@ -235,35 +273,30 @@ const DrawCardAnimation: React.FC<{
           />
         ))}
         {selectedCards.length > 0 && (
-          <span
-            style={{
-              color: "white",
-              position: "absolute",
-              bottom: 10,
-              left: 30,
-            }}
-          >
+          <span className="text-white absolute bottom-0 left-1/2 transform -translate-x-1/2 ">
             Click chọn để lật lá bài
           </span>
         )}
       </div>
-      <button
-        className="shuffle-button"
-        onClick={shuffleCards}
-        disabled={isShuffling}
-      >
-        {isShuffling ? "Đang xáo bài..." : "Xáo bài"}
-      </button>
-      {!isShuffling && shuffleCount !== 0 && selectedCards.length === 0 && (
-        <>
-          <button
-            className="draw-card-button"
-            onClick={() => drawSelectedCards(2)}
-          >
-            Lấy bài
-          </button>
-        </>
-      )}
+      <div className="flex justify-center flex-col items-center gap-2 mt-2">
+        <button
+          className="btn btn-filled-vintage text-center "
+          onClick={shuffleCards}
+          disabled={isShuffling}
+        >
+          <FaShuffle /> {isShuffling ? "Đang xáo bài..." : "Xáo bài"}
+        </button>
+        {!isShuffling && shuffleCount !== 0 && selectedCards.length === 0 && (
+          <>
+            <button
+              className="btn btn-outline-vintage"
+              onClick={() => drawSelectedCards(2)}
+            >
+              <FaHandPointUp /> Lấy 2 lá bài
+            </button>
+          </>
+        )}
+      </div>
     </>
   );
 };

@@ -43,25 +43,25 @@ export async function translateText(
 
 export const cardTalkAboutYou = async (
   cardNames: string[],
-  hintOptions: { value: HintType; label: string }
+  hintOptions: { value: HintType; label: string }[],
+  other: string
 ): Promise<TarotResponse | null> => {
   const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
   const prompt = `
     Bạn là một chuyên gia Tarot có nhiều năm kinh nghiệm. Hãy phân tích ý nghĩa của các lá bài Tarot sau đây, sử dụng ngôn ngữ và văn phong phù hợp với một chuyên gia Tarot:
 
-    Tên của các lá bài: ${cardNames.join(", ")}
+    Tên của các lá bài: ${cardNames.join(", ")}(không dịch nghĩa tiếng việt của lá bài) và bạn muốn biết thêm về ${other} 
 
-    Hãy đưa ra một bài phân tích tổng quát về ý nghĩa của các lá bài này khi xuất hiện cùng nhau, đặc biệt là trong khía cạnh ${
-      hintOptions.label
+    Hãy đưa ra một bài phân tích tổng quát về ý nghĩa của các lá bài này khi xuất hiện cùng nhau, đặc biệt là trong các khía cạnh ${
+      hintOptions.map(option => option.label).join(", ")
     }.
 
     Trả về kết quả dưới dạng JSON với cấu trúc sau:
     {
       "analysis": "Phân tích tổng quát",
-      "${hintOptions.value}": "Ý nghĩa cụ thể cho khía cạnh ${
-    hintOptions.label
-  }"
+      ${hintOptions.map(option => option.value === 'other' ? `"${option.value}": "Ý nghĩa cụ thể cho khía cạnh ${other}",` : `"${option.value}": "Ý nghĩa cụ thể cho khía cạnh ${option.label}",`).join("\n      ")}
+      "other": "Ý nghĩa cụ thể cho khía cạnh khác ${other}"
     }
 
     Không thêm chú thích \`\`\`json hay \`\`\` .
@@ -89,7 +89,7 @@ export const explainTarotCard = async (
   const prompt = `
     Bạn là một chuyên gia Tarot có nhiều năm kinh nghiệm. Hãy phân tích ý nghĩa của lá bài Tarot sau đây, sử dụng ngôn ngữ và văn phong phù hợp với một chuyên gia Tarot:
 
-    Tên lá bài: ${cardName}
+    Tên lá bài: ${cardName} (không dịch nghĩa tiếng việt của lá bài)
 
     Hãy đưa ra một bài phân tích chi tiết về ý nghĩa của lá bài này, bao gồm:
     1. Ý nghĩa tổng quát
@@ -104,7 +104,7 @@ export const explainTarotCard = async (
       "love": "Ý nghĩa trong tình yêu",
       "career": "Ý nghĩa trong sự nghiệp", 
       "finance": "Ý nghĩa trong tài chính",
-      "advice": "Lời khuyên"
+      "advice": "Lời khuyên của lá bài"
     }
 
     Không thêm chú thích \`\`\`json hay \`\`\` .
