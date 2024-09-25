@@ -2,10 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Card from "./Card";
 import "./DrawCardAnimation.css";
 import { cardData } from "../constain/data";
-import {
-  explainTarotCard,
-  TarotCardExplanation,
-} from "../services/api";
+import { explainTarotCard, TarotCardExplanation } from "../services/api";
 import { useLoading } from "../contexts/loading.context"; // Thêm import context loading
 import { FaHandPointUp, FaShuffle } from "react-icons/fa6";
 
@@ -72,6 +69,36 @@ const DrawCardAnimation: React.FC<{
     }
   }, [isShuffling]);
 
+  // Bắt sự kiện lắc điện thoại để xáo bài
+  useEffect(() => {
+    const handleShake = (event: DeviceMotionEvent) => {
+      const acceleration = event.accelerationIncludingGravity; // Sử dụng accelerationIncludingGravity
+      if (acceleration) {
+        const {
+          x = 0,
+          y = 0,
+          z = 0,
+        }: {
+          x: number | null;
+          y: number | null;
+          z: number | null;
+        } = acceleration;
+        if (
+          Math.abs(x || 0) > 15 ||
+          Math.abs(y || 0) > 15 ||
+          Math.abs(z || 0) > 15
+        ) {
+          shuffleCards();
+        }
+      }
+    };
+
+    window.addEventListener("devicemotion", handleShake);
+    return () => {
+      window.removeEventListener("devicemotion", handleShake);
+    };
+  }, []);
+
   const shuffleCards = () => {
     resetSelectedCards();
     setExplainResult([]);
@@ -106,7 +133,7 @@ const DrawCardAnimation: React.FC<{
       });
       currentIndex--;
 
-      setTimeout(shuffleStep, 150);
+      setTimeout(shuffleStep, 120);
     };
     shuffleStep();
   };
