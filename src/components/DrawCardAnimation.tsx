@@ -84,9 +84,9 @@ const DrawCardAnimation: React.FC<{
           z: number | null;
         } = acceleration;
         if (
-          Math.abs(x || 0) > 15 ||
-          Math.abs(y || 0) > 15 ||
-          Math.abs(z || 0) > 15
+          Math.abs(x || 0) > 30 || // Lắc mạnh mới kích hoạt
+          Math.abs(y || 0) > 30 || // Lắc mạnh mới kích hoạt
+          Math.abs(z || 0) > 30 // Lắc mạnh mới kích hoạt
         ) {
           shuffleCards();
         }
@@ -107,9 +107,11 @@ const DrawCardAnimation: React.FC<{
     getIsFlipped(false);
     setShuffleCount((prevCount) => prevCount + 1);
     let currentIndex = tarotCards.length - 1;
+    let recursionCount = 0; // Biến đếm số lần gọi đệ quy
 
     const shuffleStep = () => {
-      if (currentIndex <= 0) {
+      if (currentIndex <= 0 || recursionCount >= 20) {
+        // Giới hạn số lần gọi đệ quy
         setIsShuffling(false);
         return;
       }
@@ -132,8 +134,9 @@ const DrawCardAnimation: React.FC<{
         }));
       });
       currentIndex--;
+      recursionCount++; // Tăng biến đếm
 
-      setTimeout(shuffleStep, 200);
+      setTimeout(shuffleStep, 250);
     };
     shuffleStep();
   };
@@ -311,7 +314,7 @@ const DrawCardAnimation: React.FC<{
           onClick={shuffleCards}
           disabled={isShuffling}
         >
-          <FaShuffle /> {isShuffling ? "Đang xáo bài..." : "Xáo bài"}
+          <FaShuffle /> {isShuffling ? "Đang xáo bài..." : "Xáo bài & Lắc điện thoại"}
         </button>
         {!isShuffling && shuffleCount !== 0 && selectedCards.length === 0 && (
           <>

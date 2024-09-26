@@ -36,7 +36,7 @@
     @apply bg-[#FEF9EEFF] text-[#98690CFF] font-inter text-sm font-normal   border-none px-3 py-2;
   }
   .btn-filled-vintage:hover {
-    @apply bg-[#98690CFF] text-[#FEF9EEFF];
+    @apply bg-[#98690CFF] text-black;
   }
   .btn-filled-vintage:disabled {
     @apply bg-[#FEF9EEFF];
