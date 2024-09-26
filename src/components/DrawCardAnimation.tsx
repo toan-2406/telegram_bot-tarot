@@ -133,7 +133,7 @@ const DrawCardAnimation: React.FC<{
       });
       currentIndex--;
 
-      setTimeout(shuffleStep, 120);
+      setTimeout(shuffleStep, 200);
     };
     shuffleStep();
   };
