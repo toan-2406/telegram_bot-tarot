@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import cloudinary from "../constain/cloudinaryConfig";
 import { TarotCard } from "./DrawCardAnimation";
-import backCard from "../assets/back-card.png";
 
 interface CardProps {
   card: TarotCard;
@@ -30,10 +30,14 @@ const Card: React.FC<CardProps> = ({
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
+  const imageUrl = cloudinary.url(card.imageFront);
+
   return (
     <div
       key={index}
-      className={`card-${index + 1} w-[160px] h-[240px] perspective-[400px] absolute rounded-lg overflow-hidden`}
+      className={`card-${
+        index + 1
+      } w-[160px] h-[240px] perspective-[400px] absolute rounded-lg overflow-hidden`}
       style={{
         zIndex:
           isSelected && !isShuffling
@@ -69,15 +73,16 @@ const Card: React.FC<CardProps> = ({
           position: "absolute",
         }}
       >
-        <img src={backCard} alt="" />
+        <img
+          src="https://res.cloudinary.com/imt-media/image/upload/v1727514583/back-card.png"
+          alt="back_card"
+        />
       </div>
       {showDetailButton && !isShuffling && isSelected && card.isFlipped && (
-          <div className="button-card-detail bg-[#FEF9EEFF] text-black px-1 rounded-xs" >
-            <span onClick={() => handleExplainTarotCard(index)}>
-              read card
-            </span>
-          </div>
-        )}
+        <div className="button-card-detail bg-[#FEF9EEFF] text-black px-1 rounded-xs">
+          <span onClick={() => handleExplainTarotCard(index)}>read card</span>
+        </div>
+      )}
       <div
         className="card-front"
         style={{
@@ -92,8 +97,7 @@ const Card: React.FC<CardProps> = ({
           alignItems: "center",
         }}
       >
-       
-        <img src={card.imageFront} alt="" />
+        <img src={imageUrl} alt={card.name} />
       </div>
     </div>
   );
