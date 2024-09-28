@@ -36,6 +36,14 @@ const DrawCardAnimation: React.FC<{
       zIndex: cardData.length - index,
     }))
   );
+  const [fakeCards, setFakeCards] = useState<TarotCard[]>(() =>
+    Array(10).fill(null).map((_, index) => ({
+      name: `Fake Card ${index + 1}`,
+      imageFront: "path/to/fake/card/image.jpg",
+      isFlipped: false,
+      zIndex: 10 - index,
+    }))
+  );
   const [isShuffling, setIsShuffling] = useState(false);
   const [shuffleCount, setShuffleCount] = useState(0);
   const [isExplain, setIsExplain] = useState(false);
@@ -53,7 +61,7 @@ const DrawCardAnimation: React.FC<{
       const containerHeight = containerRef.current?.offsetHeight ?? 320;
       const cardWidth = 160;
       const cardHeight = 240;
-      setTarotCards((prevCards) =>
+      setFakeCards((prevCards) =>
         prevCards.map((card) => ({
           ...card,
           position: {
@@ -86,19 +94,18 @@ const DrawCardAnimation: React.FC<{
     resetSelectedCards();
     setExplainResult([]);
     setIsShuffling(true);
-    setLoading(true);
 
-    // Lọc các lá bài chưa được chọn
-    const availableCards = tarotCards.filter(card => !selectedCards.some(selected => selected.name === card.name));
+    // Xáo trộn các lá bài giả
+    const shuffledFakeCards = [...fakeCards].sort(() => Math.random() - 0.5);
+    setFakeCards(shuffledFakeCards);
 
-    // Xáo trộn các lá bài còn lại
-    const shuffledCards = availableCards.sort(() => Math.random() - 0.5);
+    // Xáo trộn các lá bài thật (không hiển thị)
+    const shuffledRealCards = [...tarotCards].sort(() => Math.random() - 0.5);
+    setTarotCards(shuffledRealCards);
 
-    // Cập nhật lại danh sách lá bài
-    setTarotCards(shuffledCards);
     getIsFlipped(false);
     setShuffleCount((prevCount) => prevCount + 1);
-    let currentIndex = tarotCards.length - 1;
+    let currentIndex = fakeCards.length - 1;
     let recursionCount = 0;
 
     const shuffleStep = () => {
@@ -107,7 +114,7 @@ const DrawCardAnimation: React.FC<{
         return;
       }
 
-      setTarotCards((prevCards) => {
+      setFakeCards((prevCards) => {
         const newCards = [...prevCards];
         const randomIndex = Math.floor(Math.random() * (currentIndex + 1));
         [newCards[currentIndex], newCards[randomIndex]] = [newCards[randomIndex], newCards[currentIndex]];
@@ -126,7 +133,7 @@ const DrawCardAnimation: React.FC<{
       setTimeout(shuffleStep, 250);
     };
     shuffleStep();
-  }, [selectedCards, explainResult, setLoading]);
+  }, [fakeCards, tarotCards, setLoading]);
 
   const resetSelectedCards = useCallback(() => {
     setSelectedCards([]);
@@ -211,7 +218,18 @@ const DrawCardAnimation: React.FC<{
         ref={containerRef}
         className="relative h-[360px] mx-auto w-full flex items-center justify-center rounded-10 max-w-450 "
       >
-        {tarotCards.map((card, index) => (
+        {isShuffling ? fakeCards.map((card, index) => (
+          <Card
+            key={index}
+            card={card}
+            index={index}
+            isShuffling={isShuffling}
+            selectedCards={[]}
+            length={index}
+            flipCard={() => {}}
+            handleExplainTarotCard={() => {}}
+          />
+        )) : tarotCards.map((card, index) => (
           <Card
             key={index}
             card={card}
