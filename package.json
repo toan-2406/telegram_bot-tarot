@@ -10,11 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.1.1",
+    "@fontsource/old-standard-tt": "^5.1.1",
+    "@fontsource/playfair-display": "^5.1.1",
     "@google-cloud/translate": "^8.5.0",
     "@google/generative-ai": "^0.19.0",
     "@types/telegram-web-app": "^7.8.1",
     "axios": "^1.7.7",
     "cloudinary-react": "^1.8.1",
+    "framer-motion": "^12.4.7",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
